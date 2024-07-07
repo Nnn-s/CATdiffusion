@@ -1,9 +1,10 @@
 # CaTdiffusion
-Official implementation of ImprovingText-guided ObjectInpainting with SemanticPre-inpainting in ECCV 2024.
+Official implementation of ImprovingText-guided Object Inpainting with Semantic Pre-inpainting in ECCV 2024.
 
 > **Improving Text-guided Object Inpainting with semantic Pre-inpainting**
 
  Our model checkpoints trained on [OpenImage v6](https://storage.googleapis.com/openimages/web/download_v6.html) and subset of [LAION 5B](https://laion.ai/blog/laion-5b/) have been released.
+ 🤗 [Try out CaTdiffusion](https://huggingface.co/Nnnswic/CaTdiffusion)
 
  ![framework](assets/paper_images/framework.png)&nbsp;
 
