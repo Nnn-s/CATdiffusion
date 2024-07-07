@@ -5,7 +5,7 @@ Official implementation of ImprovingText-guided ObjectInpainting with SemanticPr
 
  Our model checkpoints trained on [OpenImage v6](https://storage.googleapis.com/openimages/web/download_v6.html) and subset of [LAION 5B](https://laion.ai/blog/laion-5b/) have been released.
 
- ![framework](framework.png)&nbsp;
+ ![framework](assets/paper_images/framework.png)&nbsp;
 
 ## Installation
 1. Clone the repository
@@ -84,10 +84,10 @@ python train.py --ckpt stage2_1/last.ckpt --config ./models/mldm_v15_stage2_1.ya
 
 ## Generated Examples
 ### Bounding Box mask inpainted results:
- ![box_image](long_image_0.png)&nbsp;
- ![box_image](long_image_1.png)&nbsp;
- ![box_image](long_image_2.png)&nbsp;
+ ![box_image](assets/readme_images/long_image_0.png)&nbsp;
+ ![box_image](assets/readme_images/long_image_1.png)&nbsp;
+ ![box_image](assets/readme_images/long_image_2.png)&nbsp;
 
 ### Segmentation mask inpainted results:
- ![seg_image](long_image_3.png)&nbsp;
- ![seg_image](long_image_4.png)&nbsp;
+ ![seg_image](assets/readme_images/long_image_3.png)&nbsp;
+ ![seg_image](assets/readme_images/long_image_4.png)&nbsp;
