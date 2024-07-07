@@ -1,0 +1,112 @@
+model:
+  target: mldm.mldm_stage2_2.MaskLDM
+  params:
+    linear_start: 0.00085
+    linear_end: 0.0120
+    num_timesteps_cond: 1
+    log_every_t: 200
+    timesteps: 1000
+    first_stage_key: "jpg"
+    cond_stage_key: "txt"
+    image_size: 64
+    channels: 4
+    cond_stage_trainable: false
+    conditioning_key: crossattn
+    monitor: val/loss_simple_ema
+    scale_factor: 0.18215
+    use_ema: False
+    loss_dice_weight: 0.01
+
+    unet_config:
+      target: mldm.mldm_stage2_2.MaskUnetModel
+      params:
+        image_size: 32 # unused
+        in_channels: 9
+        out_channels: 4
+        model_channels: 320
+        attention_resolutions: [ 4, 2, 1 ]
+        num_res_blocks: 2
+        channel_mult: [ 1, 2, 4, 4 ]
+        num_heads: 8
+        use_spatial_transformer: true
+        transformer_depth: 1
+        context_dim: 768
+        use_checkpoint: True
+        legacy: False
+        fusion_dim: 1024 #clip_image_hidden_dim
+
+    fusion_config:
+      target: mldm.vision_fusion.mldm_attention.VisionFusionTransformer
+      params:
+        config:
+          use_fp16: False
+          layer_norm_eps: 1e-05
+          output_attentions: false
+          output_hidden_states: false
+          use_return_dict: false
+          return_dict: false
+          num_channels: 1 #mask channel 1 or 3
+          hidden_size: 1024 #outchannel of transformer
+          hidden_act: "quick_gelu"
+          intermediate_size: 4096 #4*hidden_size
+          num_attention_heads: 16
+          num_hidden_layers: 24
+          patch_size: 14
+          image_size: 224
+          attention_dropout: 0.0
+          label_mlp:
+            hidden_act: "quick_gelu"
+            in_channels: 768
+            intermediate_size: 3072
+            out_channels: 1024
+          spatial_mlp:
+            hidden_act: "quick_gelu"
+            hidden_size: 1024
+            intermediate_size: 4096
+          global_mlp:
+            hidden_act: "quick_gelu"
+            hidden_size: 1024
+            intermediate_size: 4096
+
+
+
+    # fusion_config:
+    #   target: mldm.mldm.FusionNet
+    #   params:
+    #       image_dim: 1024 #clip_image_hidden_dim
+    #       conv_resample: True
+    #       dims: 2
+    #       use_fp16: False
+    #       context_dim: 768
+    #       middle_dims: [512,1024]
+
+    first_stage_config:
+      target: ldm.models.autoencoder.AutoencoderKL
+      params:
+        embed_dim: 4
+        monitor: val/rec_loss
+        ddconfig:
+          double_z: true
+          z_channels: 4
+          resolution: 256
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult:
+          - 1
+          - 2
+          - 4
+          - 4
+          num_res_blocks: 2
+          attn_resolutions: []
+          dropout: 0.0
+        lossconfig:
+          target: torch.nn.Identity
+
+    cond_stage_config:
+      target: ldm.modules.encoders.modules.FrozenCLIPEmbedder
+
+    cond_stage_config2:
+      target: ldm.modules.encoders.modules.FrozenCLIPVisionEncoder
+      params:
+        layer: "last_and_pool"
