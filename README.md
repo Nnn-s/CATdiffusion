@@ -1,4 +1,4 @@
-# CaTdiffusion
+# CATdiffusion
 Official implementation of ImprovingText-guided Object Inpainting with Semantic Pre-inpainting in ECCV 2024.
 
 > **Improving Text-guided Object Inpainting with semantic Pre-inpainting**
