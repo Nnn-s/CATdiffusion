@@ -5,14 +5,14 @@ Official implementation of ImprovingText-guided Object Inpainting with Semantic 
 
  Our model checkpoints trained on [OpenImage v6](https://storage.googleapis.com/openimages/web/download_v6.html) and subset of [LAION 5B](https://laion.ai/blog/laion-5b/) have been released.
  
- 🤗 [Try out CaTdiffusion](https://huggingface.co/Nnnswic/CaTdiffusion)
+ 🤗 [Try out CATdiffusion](https://huggingface.co/Nnnswic/CaTdiffusion)
 
  ![framework](assets/paper_images/framework.png)&nbsp;
 
 ## Installation
 1. Clone the repository
 ```sh
-https://github.com/Nnn-s/CaTdiffusion
+https://github.com/Nnn-s/CATdiffusion
 ```
 2. Create a conda environmenta and install required packages
 ```sh
@@ -80,6 +80,16 @@ python train.py --ckpt ckpt_for_stage2.ckpt --config ./models/mldm_v15_stage2_1.
 
 ```sh
 python train.py --ckpt stage2_1/last.ckpt --config ./models/mldm_v15_stage2_1.yaml --save_path ./stage2_2
+```
+
+## Citation
+```
+@article{Chen2024CATiffusion,
+  title={Improving Text-guided Object Inpainting with semantic Pre-inpainting},
+  author={},
+  journal={},
+  year={2024}
+}
 ```
 
 
