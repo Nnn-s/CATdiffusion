@@ -38,25 +38,23 @@ python dataset_infer.py --ckpt test.ckpt --output_dir results --config ./models/
 
 ## Train:
 
-The training process is divided into two stages. In the first stage, the Semantic Inpainter is trained separately using distillation learning with a CLIP teacher model, and the UNet and Reference Adapter are trained separately using ground truth images. 
-
-In the second stage, the two checkpoints from the first stage are combined, the UNet and adapter are frozen, and the Semantic Inpainter is trained using diffusion loss. Finally, all parameters are unfrozen and the entire model is trained using diffusion loss.
+The training process is divided into two stages. In the first stage, the Semantic Inpainter and UNet w/ Reference Adapter are optimized using feature distillation loss and diffusion loss, respectively. In the second stage, the full model CAT-Diffusion is finetuned using diffusion loss. Specifically, only the Semantic Inpainter is tuned keeping the other modules frozen in early steps, and in later steps, the UNet w/ Reference Adapter is unfrozen and tuned as well.
 
 ### Stage1:
 
-**1. First, the original [Stable Diffusion 1.5 inpainting model](https://huggingface.co/runwayml/stable-diffusion-inpainting/tree/main) needs to be processed.**
+**1. Convert the weights of the [base model](https://huggingface.co/runwayml/stable-diffusion-inpainting/tree/main) into customized format:**
 
 ```sh
 python tool_stage1.py --input_path sd-v1-5-inpainting.ckpt --output_path ckpt_for_stage1.ckpt --config ./models/mldm_v15.yaml
 ```
 
-**2. Train Semantic Inpainter**
+**2. Train Semantic Inpainter:**
 
 ```sh
 python train.py --ckpt ckpt_for_stage1.ckpt --config ./models/mldm_v15_stage1.yaml --save_path ./stage1_Semantic_Inpainter
 ```
 
-**3. Train Unet and Reference Adapter**
+**3. Train Unet and Reference Adapter:**
 
 ```sh
 python train.py --ckpt ckpt_for_stage1.ckpt --config ./models/mldm_v15_unet_only.yaml --save_path ./stage1_Unet
@@ -64,19 +62,19 @@ python train.py --ckpt ckpt_for_stage1.ckpt --config ./models/mldm_v15_unet_only
 
 ### Stage2:
 
-**1. Combined ckpts in Stage1:**
+**1. Merge the pre-trained weights from Stage 1:**
 
 ```sh
 python tool_merge_for_stage2.py --stage1_path ./stage1_Semantic_Inpainter/last.ckpt --input_path ./stage1_Unet/last.ckpt --output_path ckpt_for_stage2.ckpt --config ./models/mldm_v15.yaml
 ```
 
-**2. Train Semantic Inpainter with diffusion loss:**
+**2. Finetune Semantic Inpainter with diffusion loss:**
 
 ```sh
 python train.py --ckpt ckpt_for_stage2.ckpt --config ./models/mldm_v15_stage2_1.yaml --save_path ./stage2_1
 ```
 
-**3. Final Training:**
+**3. Full finetune:**
 
 ```sh
 python train.py --ckpt stage2_1/last.ckpt --config ./models/mldm_v15_stage2_1.yaml --save_path ./stage2_2
@@ -86,8 +84,8 @@ python train.py --ckpt stage2_1/last.ckpt --config ./models/mldm_v15_stage2_1.ya
 ```
 @article{Chen2024CATiffusion,
   title={Improving Text-guided Object Inpainting with semantic Pre-inpainting},
-  author={},
-  journal={},
+  author={Yifu Chen, Jingwen Chen, Yingwei Pan, Yehao Li, Ting Yao, Zhineng Chen, and Tao Mei},
+  journal={ECCV},
   year={2024}
 }
 ```
