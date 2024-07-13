@@ -3,9 +3,6 @@ Official implementation of Improving Text-guided Object Inpainting with Semantic
 
 > **Improving Text-guided Object Inpainting with semantic Pre-inpainting**
 
- Our model checkpoints trained on [OpenImage v6](https://storage.googleapis.com/openimages/web/download_v6.html) and subset of [LAION 5B](https://laion.ai/blog/laion-5b/) have been released.
-
-
  ![framework](assets/paper_images/framework.png)&nbsp;
 
 ## Installation
