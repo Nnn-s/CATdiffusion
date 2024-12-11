@@ -47,7 +47,7 @@ python tool_stage1.py --input_path sd-v1-5-inpainting.ckpt --output_path ckpt_fo
 **2. Train Semantic Inpainter:**
 
 ```sh
-python train.py --ckpt ckpt_for_stage1.ckpt --config ./models/mldm_v15_stage1.yaml --save_path ./stage1_Semantic_Inpainter
+python train.py --ckpt ckpt_for_stage1.ckpt --stage 1 --config ./models/mldm_v15_stage1.yaml --save_path ./stage1_Semantic_Inpainter
 ```
 
 **3. Train Unet and Reference Adapter:**
@@ -67,13 +67,13 @@ python tool_merge_for_stage2.py --stage1_path ./stage1_Semantic_Inpainter/last.c
 **2. Finetune Semantic Inpainter with diffusion loss:**
 
 ```sh
-python train.py --ckpt ckpt_for_stage2.ckpt --config ./models/mldm_v15_stage2_1.yaml --save_path ./stage2_1
+python train.py --ckpt ckpt_for_stage2.ckpt --stage 2 --config ./models/mldm_v15_stage2_1.yaml --save_path ./stage2_1
 ```
 
 **3. Full finetune:**
 
 ```sh
-python train.py --ckpt stage2_1/last.ckpt --config ./models/mldm_v15_stage2_1.yaml --save_path ./stage2_2
+python train.py --ckpt stage2_1/last.ckpt --stage 2 --config ./models/mldm_v15_stage2_1.yaml --save_path ./stage2_2
 ```
 
 ## Citation

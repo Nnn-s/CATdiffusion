@@ -368,6 +368,7 @@ class VisionFusionTransformer(nn.Module):
         pooled_output = self.post_layernorm(pooled_output.to(self.dtype))
         #spatial_output = self.spatial_layernorm(last_hidden_state[:, 1:-1, :])
         spatial_output = last_hidden_state[:, 1:-1, :]
+        assert self.stage in [1,2], "training stages should be in [1,2]"
         if self.stage == 2 and sample:
             mask = rearrange(mask_values,"b c h w -> b (h w) c")
             spatial_output = mask*spatial_output + (1-mask)*spatial_features #
